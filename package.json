@@ -1,0 +1,11 @@
+{
+  "name": "datetocsv",
+  "description": "Converting DAE data to CSV for wordpress upload",
+  "version": "0.0.0-0",
+  "private": true,
+  "author": "Vincent Kammerer",
+  "dependencies": {
+    "q":"~0.9.7",
+    "xml2js":"latest"
+  }
+}
