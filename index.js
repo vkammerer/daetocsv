@@ -43,6 +43,8 @@ parseString(xmlData, function (err, result) {
 	    return false;
 	}
 	var model = result.COLLADA.library_effects[0].effect[0].$.id.toLowerCase();
+	model = model.substring(0, model.length - 7);
+
   var geometries = result.COLLADA.library_geometries[0].geometry;
   if (!geometries) {
 		try {
