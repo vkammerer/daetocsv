@@ -42,11 +42,15 @@ parseString(xmlData, function (err, result) {
 	    console.error(e);
 	    return false;
 	}
-	var model = result.COLLADA.library_effects[0].effect[0].$.id.toLowerCase();
-	model = model.substring(0, model.length - 7);
 
-  var geometries = result.COLLADA.library_geometries[0].geometry;
-  if (!geometries) {
+
+  var model = result.COLLADA.library_geometries[0].geometry[0].$.id.toLowerCase();
+	console.log('Model name: ' + model);
+
+	var subsets = result.COLLADA.library_effects[0].effect;
+	console.log('Number of subsets: ' + subsets.length);
+
+  if (!subsets) {
 		try {
 			throw new Error('Error parsing the data 2');
 		} catch (e) {
@@ -76,8 +80,8 @@ parseString(xmlData, function (err, result) {
 
 	/* Pieces */
 
-  geometries.forEach(function(geometry){
-  	var thisName = geometry.$.name.toLowerCase();
+  subsets.forEach(function(subset){
+  	var thisName = subset.$.id.toLowerCase();
 		csvContent += model + '____' + thisName + ';';
 		csvContent += thisName + ';';
 		csvContent += thisName + ';';
