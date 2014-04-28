@@ -43,12 +43,12 @@ parseString(xmlData, function (err, result) {
 	    return false;
 	}
 
-
   var model = result.COLLADA.library_geometries[0].geometry[0].$.id.toLowerCase();
 	console.log('Model name: ' + model);
 
-	var subsets = result.COLLADA.library_effects[0].effect;
+	var subsets = result.COLLADA.library_geometries[0].geometry[0].mesh[0].triangles;
 	console.log('Number of subsets: ' + subsets.length);
+
 
   if (!subsets) {
 		try {
@@ -60,6 +60,7 @@ parseString(xmlData, function (err, result) {
   }
 
   var filename = filePath.substring(0,filePath.length - 3) + 'csv';
+  var filenameIrwin = filePath.substring(0,filePath.length - 4) + '_irwin.csv';
 
   var csvContent = '';
 	csvContent += 'post_slug;';
@@ -81,13 +82,19 @@ parseString(xmlData, function (err, result) {
 	/* Pieces */
 
   subsets.forEach(function(subset){
-  	var thisName = subset.$.id.toLowerCase();
+  	var thisName = subset.$.material.toLowerCase();
 		csvContent += model + '____' + thisName + ';';
 		csvContent += thisName + ';';
 		csvContent += thisName + ';';
 		csvContent += 'Draft;';
 		csvContent += 'piece;';
 		csvContent += model + '\n';
+  });
+
+  var csvContentIrwin = '';
+
+  subsets.forEach(function(subset){
+		csvContentIrwin += model + '____' + subset.$.material.toLowerCase() + '\n';
   });
 
 	fs.writeFile(filename, csvContent, function(err) {
@@ -98,5 +105,15 @@ parseString(xmlData, function (err, result) {
 			console.log(filename + ' was saved!');
 		}
 	});
+
+	fs.writeFile(filenameIrwin, csvContentIrwin, function(err) {
+		if(err) {
+			console.log(err);
+		}
+		else {
+			console.log(filename + ' was saved!');
+		}
+	});
+
 
 });
